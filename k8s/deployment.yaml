@@ -17,3 +17,13 @@ spec:
         image: app:latest
         ports:
         - containerPort: 8080
+        env:
+        - name: ENV_VAR_NAME
+          value: "value"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"

@@ -1,0 +1,25 @@
+{
+  "name": "microservice-project-ui",
+  "version": "1.0.0",
+  "description": "React UI for the Microservice Project",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-react-app": "^6.0.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
+    "react-router-dom": "^5.2.0"
+  },
+  "homepage": "http://localhost:3000",
+  "license": "MIT"
+}

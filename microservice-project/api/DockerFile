@@ -1,0 +1,17 @@
+# Use an official Maven image with OpenJDK 11 as a parent image
+FROM maven:3.8.4-openjdk-11-slim
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Copy the API project files
+COPY . .
+
+# Build the API project
+RUN mvn package
+
+# Expose the port the API runs on
+EXPOSE 8080
+
+# Define the command to run the API
+CMD ["java", "-jar", "target/api-1.0-SNAPSHOT.jar"]
