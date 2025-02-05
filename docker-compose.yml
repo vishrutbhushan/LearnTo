@@ -1,11 +1,36 @@
 version: '3.8'
 
 services:
-  app:
-    build: .
+  api:
+    build:
+      context: ./microservice-project/api
+      dockerfile: DockerFile
     ports:
       - "8080:8080"
-    volumes:
-      - .:/usr/src/app
     environment:
-      - NODE_ENV=development
+      - SPRING_PROFILES_ACTIVE=prod
+
+  ui:
+    build:
+      context: ./microservice-project/ui
+      dockerfile: DockerFile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3307:3306"  # Change the host port to 3307
+    environment:
+      MYSQL_ROOT_PASSWORD: not4u2c
+      MYSQL_DATABASE: learnto
+      MYSQL_USER: vishrutbhushan
+      MYSQL_PASSWORD: not4u2c
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+
+volumes:
+  db_data:
