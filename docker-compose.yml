@@ -13,7 +13,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    entrypoint: ["sh", "-c", "sleep 30 && java -jar /usr/src/app/target/api-1.0-SNAPSHOT.jar"]
+    entrypoint: ["java", "-jar", "/usr/src/app/target/api-1.0-SNAPSHOT.jar"]
 
   ui:
     build:
