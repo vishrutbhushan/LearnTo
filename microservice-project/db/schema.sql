@@ -1,29 +1,18 @@
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE Graphs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT,
+    created_user VARCHAR(255) NOT NULL,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    adjacency_matrix JSON NOT NULL,
+    all_nodes JSON NOT NULL
 );
 
-CREATE TABLE posts (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
+-- Insert a new graph into the Graphs table
+INSERT INTO Graphs (name, description, created_user, adjacency_matrix, all_nodes)
+VALUES ('Graph A', 'Description for Graph A', 'UserA', JSON_ARRAY(JSON_ARRAY(JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 2, 'highlighted', false), JSON_OBJECT('weight', 1, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false)), JSON_ARRAY(JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 2, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false)), JSON_ARRAY(JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false))), JSON_OBJECT('a', JSON_OBJECT('x', 100, 'y', 100, 'index', 0, 'highlighted', false), 'b', JSON_OBJECT('x', 171, 'y', 399, 'index', 1, 'highlighted', false), 'c', JSON_OBJECT('x', 606, 'y', 265, 'index', 2, 'highlighted', false)));
 
-CREATE TABLE comments (
-    id SERIAL PRIMARY KEY,
-    post_id INT NOT NULL,
-    user_id INT NOT NULL,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
--- Ensure that the referenced tables are created before the referencing tables
--- This fixes the issue of referencing tables being created before the referenced tables
+-- Insert another graph into the Graphs table
+INSERT INTO Graphs (name, description, created_user, adjacency_matrix, all_nodes)
+VALUES ('Graph B', 'Description for Graph B', 'UserB', JSON_ARRAY(JSON_ARRAY(JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 1, 'highlighted', false), JSON_OBJECT('weight', 2, 'highlighted', false), JSON_OBJECT('weight', -1, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false)), JSON_ARRAY(JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false)), JSON_ARRAY(JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 2, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false)), JSON_ARRAY(JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 2, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false), JSON_OBJECT('weight', 0, 'highlighted', false))), JSON_OBJECT('a', JSON_OBJECT('x', 99, 'y', 99, 'index', 0, 'highlighted', false), 'b', JSON_OBJECT('x', 561, 'y', 370, 'index', 1, 'highlighted', false), 'c', JSON_OBJECT('x', 521, 'y', 129, 'index', 2, 'highlighted', false), 'd', JSON_OBJECT('x', 192, 'y', 293, 'index', 3, 'highlighted', false)));

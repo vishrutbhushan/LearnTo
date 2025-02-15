@@ -1,24 +1,11 @@
 import * as CONSTANTS from "./constants";
-
-// Define types for the action payloads
-interface InsertNodePayload {
-  nodeName: string;
-}
-
-interface RemoveNodePayload {
-  nodeName: string;
-}
-
-interface UpdateWeightPayload {
-  fromNodeName: string;
-  toNodeName: string;
-  weight: number;
-}
-
-interface SelectNodePayload {
-  fromNode: string | null;
-  toNode: string | null;
-}
+import {
+  InsertNodePayload,
+  RemoveNodePayload,
+  UpdateWeightPayload,
+  SelectNodePayload,
+  Graph,
+} from "./types";
 
 // Action to insert a node
 export const insertNode = (nodeName: string) => {
@@ -57,7 +44,10 @@ export const reset = () => ({
 });
 
 // Action to select a node
-export const setSelectedNode = (fromNode: string | null, toNode: string | null) => {
+export const setSelectedNode = (
+  fromNode: string | null,
+  toNode: string | null
+) => {
   const payload: SelectNodePayload = { fromNode, toNode };
   return {
     type: CONSTANTS.SET_SELECT_NODE,
@@ -93,5 +83,70 @@ export const highlightNode = (nodeName: string, highlighted: boolean) => {
   return {
     type: CONSTANTS.SET_HIGHLIGHT_NODE,
     payload,
+  };
+};
+
+// Action to set all graphs
+export const setSavedGraphs = (
+  graphs: { id: number; name: string; desc: string }[]
+) => {
+  return {
+    type: CONSTANTS.SET_SAVED_GRAPHS,
+    payload: { savedGraphs: graphs },
+  };
+};
+
+// Action to fetch all graphs
+export const fetchGraphs = () => {
+  return {
+    type: CONSTANTS.FETCH_GRAPHS_REQUEST,
+  };
+};
+
+// Action to fetch a graph
+export const fetchGraph = (name: string) => {
+  return {
+    type: CONSTANTS.FETCH_GRAPH_REQUEST,
+    payload: name,
+  };
+};
+
+// Action to create a graph
+export const createGraph = (graph: Graph) => {
+  return {
+    type: CONSTANTS.CREATE_GRAPH_REQUEST,
+    payload: graph,
+  };
+};
+
+// Action to update a graph
+export const updateGraph = (id: number, graph: Graph) => {
+  return {
+    type: CONSTANTS.UPDATE_GRAPH_REQUEST,
+    payload: { id, graph },
+  };
+};
+
+// Action to delete a graph
+export const deleteGraph = (id: number) => {
+  return {
+    type: CONSTANTS.DELETE_GRAPH_REQUEST,
+    payload: id,
+  };
+};
+
+// Action to display a notification
+export const displayNotification = (message: string) => {
+  return {
+    type: CONSTANTS.DISPLAY_NOTIFICATION,
+    payload: message,
+  };
+};
+
+// Action to open saved graph
+export const openSavedGraph = (id: number) => {
+  return {
+    type: CONSTANTS.OPEN_SAVED_GRAPH,
+    payload: id,
   };
 };

@@ -1,11 +1,19 @@
-# Use an official Maven image with OpenJDK 11 as a parent image
-FROM maven:3.8.4-openjdk-11-slim
+# Use an official OpenJDK 23 image as a parent image
+FROM openjdk:23-slim
+
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /usr/src/app
 
 # Copy the API project files
 COPY . .
+
+# Build the API project
+RUN mvn clean
 
 # Build the API project
 RUN mvn package

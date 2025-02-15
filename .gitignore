@@ -6,3 +6,9 @@ package-lock.json
 
 # Ignore target directory
 target/
+
+# Ignore launch.json file
+.vscode/launch.json
+
+# Ignore gitignore file
+.gitignore
