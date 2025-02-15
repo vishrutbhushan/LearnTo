@@ -7,25 +7,13 @@ export const initialState: State = {
   adjacencyMatrix: [],
   allNodes: {},
   selectedNodes: { fromNode: null, toNode: null },
-};
-
-// Error messages
-const ERROR_MESSAGES = {
-  NODE_EXISTS: (nodeName: string) =>
-    `Node with name ${nodeName} already exists.`,
-  NODE_NOT_EXISTS: (nodeName: string) =>
-    `Node with name ${nodeName} does not exist.`,
-  LINK_SELF: (nodeName: string) => `Cannot link a node to itself: ${nodeName}`,
-  NODES_NOT_EXIST: (fromNodeName: string, toNodeName: string) =>
-    `One or both nodes do not exist: ${fromNodeName}, ${toNodeName}`,
+  savedGraphs: [],
+  displayNotification: "",
 };
 
 // Function to insert a new node into the state
 const insertNode = (draft: Draft<State>, payload: { nodeName: string }) => {
   const { nodeName } = payload;
-  if (draft.allNodes[nodeName] !== undefined) {
-    throw new Error(ERROR_MESSAGES.NODE_EXISTS(nodeName));
-  }
   const newNodeIndex = draft.adjacencyMatrix.length;
   draft.allNodes[nodeName] = {
     index: newNodeIndex,
@@ -55,10 +43,6 @@ const updateNodeIndices = (draft: Draft<State>, nodeIndex: number) => {
 const removeNode = (draft: Draft<State>, payload: { nodeName: string }) => {
   const { nodeName } = payload;
   const nodeIndex = draft.allNodes[nodeName]?.index;
-  if (nodeIndex === undefined) {
-    throw new Error(ERROR_MESSAGES.NODE_NOT_EXISTS(nodeName));
-  }
-
   // Remove the node from selectedNodes if it is present
   if (draft.selectedNodes.fromNode === nodeName) {
     draft.selectedNodes.fromNode = draft.selectedNodes.toNode ?? null;
@@ -81,14 +65,8 @@ const updateWeight = (
   payload: { fromNodeName: string; toNodeName: string; weight: number }
 ) => {
   const { fromNodeName, toNodeName, weight } = payload;
-  if (fromNodeName === toNodeName) {
-    throw new Error(ERROR_MESSAGES.LINK_SELF(fromNodeName));
-  }
   const fromNodeIndex = draft.allNodes[fromNodeName]?.index;
   const toNodeIndex = draft.allNodes[toNodeName]?.index;
-  if (fromNodeIndex === undefined || toNodeIndex === undefined) {
-    throw new Error(ERROR_MESSAGES.NODES_NOT_EXIST(fromNodeName, toNodeName));
-  }
   draft.adjacencyMatrix[fromNodeIndex][toNodeIndex].weight = weight;
 };
 
@@ -100,9 +78,6 @@ const setHighlightLink = (
   const { fromNodeName, toNodeName, highlighted } = payload;
   const fromNodeIndex = draft.allNodes[fromNodeName]?.index;
   const toNodeIndex = draft.allNodes[toNodeName]?.index;
-  if (fromNodeIndex === undefined || toNodeIndex === undefined) {
-    throw new Error(ERROR_MESSAGES.NODES_NOT_EXIST(fromNodeName, toNodeName));
-  }
   draft.adjacencyMatrix[fromNodeIndex][toNodeIndex].highlighted = highlighted;
 };
 
@@ -113,9 +88,6 @@ const setHighlightNode = (
 ) => {
   const { nodeName, highlighted } = payload;
   const node = draft.allNodes[nodeName];
-  if (node === undefined) {
-    throw new Error(ERROR_MESSAGES.NODE_NOT_EXISTS(nodeName));
-  }
   node.highlighted = highlighted;
 };
 
@@ -135,15 +107,30 @@ const updateNodePosition = (
 ) => {
   const { nodeName, x, y } = payload;
   const node = draft.allNodes[nodeName];
-  if (node === undefined) {
-    throw new Error(ERROR_MESSAGES.NODE_NOT_EXISTS(nodeName));
-  }
   node.x = x;
   node.y = y;
 };
 
+// Function to set the saved graphs
+const setSavedGraphs = (
+  draft: Draft<State>,
+  payload: { savedGraphs: { id: number; name: string; desc: string }[] }
+) => {
+  draft.savedGraphs = payload.savedGraphs;
+};
+
+// Function to set the opened graph
+const setOpenedGraph = (
+  draft: Draft<State>,
+  payload: { adjacencyMatrix: { weight: number; highlighted: boolean }[][]; allNodes: { [key: string]: { index: number; x: number; y: number; highlighted: boolean } } }
+) => {
+  draft.adjacencyMatrix = payload.adjacencyMatrix;
+  draft.allNodes = payload.allNodes;
+};
+
 // The main reducer function
 export const reducer = produce((draft: Draft<State>, action: Action) => {
+  console.log(`Action dispatched: ${action.type}`, action.payload);
   switch (action.type) {
     case CONSTANTS.INSERT_NODE:
       insertNode(draft, action.payload);
@@ -167,7 +154,13 @@ export const reducer = produce((draft: Draft<State>, action: Action) => {
       setHighlightNode(draft, action.payload);
       break;
     case CONSTANTS.RESET:
-      return initialState;
+      return { ...initialState, savedGraphs: draft.savedGraphs };
+    case CONSTANTS.SET_SAVED_GRAPHS:
+      setSavedGraphs(draft, action.payload);
+      break;
+    case CONSTANTS.OPEN_SAVED_GRAPH:
+      setOpenedGraph(draft, action.payload);
+      break;
     default:
       console.warn(`Unhandled action type: ${action.type}`);
       break;

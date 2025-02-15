@@ -38,7 +38,15 @@ export const toolbarStyles = makeStyles({
 });
 
 export const graphVisualizerStyles = makeStyles(() => ({
-
+  root: {
+    height: "100vh !important",
+    width: "100vw !important",
+    display: "flex",
+    flexDirection: "row",
+    padding: "8px",
+    gap: "8px",
+    boxSizing: "border-box",
+  }
 }));
 
 export const playAreaStyles = makeStyles(() => ({
@@ -53,5 +61,9 @@ export const playAreaStyles = makeStyles(() => ({
   svg: {
     border: "1px solid black",
     backgroundColor: "#f0f0f0",
+    height: "100%",
+    width: "100%",
+    borderRadius: "8px",
+    boxSizing: "border-box",
   },
 }));
