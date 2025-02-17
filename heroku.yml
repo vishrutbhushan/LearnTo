@@ -1,0 +1,13 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+
+build:
+  docker:
+    web: Dockerfile
+    api: microservice-project/api/DockerFile
+    ui: microservice-project/ui/DockerFile
+
+run:
+  web: docker-compose up
