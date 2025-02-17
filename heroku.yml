@@ -9,4 +9,7 @@ build:
     ui: microservice-project/ui/DockerFile
 
 run:
-  web: docker-compose up
+  web:
+    image: ui
+    command:
+      - docker-compose up
