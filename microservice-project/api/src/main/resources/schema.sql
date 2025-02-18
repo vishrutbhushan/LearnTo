@@ -1,11 +1,11 @@
 CREATE SCHEMA IF NOT EXISTS "GraphVisualizer";
 
-CREATE TABLE "GraphVisualizer".Graphs (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS "GraphVisualizer".Graphs (
+    id INT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     description TEXT,
     created_user VARCHAR(255) NOT NULL,
-    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_deleted BOOLEAN DEFAULT FALSE,
     adjacency_matrix JSON NOT NULL,
     all_nodes JSON NOT NULL
