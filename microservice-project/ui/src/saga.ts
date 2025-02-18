@@ -2,12 +2,8 @@ import { call, put, takeEvery, all } from "redux-saga/effects";
 import axios from "axios";
 import * as ACTIONS from "./actions";
 import { CREATE_GRAPH_REQUEST, DELETE_GRAPH_REQUEST, FETCH_GRAPH_REQUEST, FETCH_GRAPHS_REQUEST, UPDATE_GRAPH_REQUEST } from "./constants";
-import dotenv from "dotenv";
 
-dotenv.config();
-
-const API_BASE_URL : string = process.env.API_BASE_URL ?? "http://localhost:8080/graphs";
-
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080/graph";
 
 function* fetchGraphs(): Generator<any, void, any> {
   try {
