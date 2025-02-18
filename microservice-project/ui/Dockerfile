@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run the app
-CMD ["npm", "start", "--", "--host", "0.0.0.0", "--disable-host-check"]
+CMD ["npm", "start", "--", "--host", "0.0.0.0"]
