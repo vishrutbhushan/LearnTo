@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS "GraphVisualizer";
 DROP TABLE IF EXISTS "GraphVisualizer".Graphs;
 
 CREATE TABLE "GraphVisualizer".Graphs (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     description TEXT,
     created_user VARCHAR(255) NOT NULL,
