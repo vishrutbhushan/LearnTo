@@ -9,7 +9,7 @@ RUN apt-get update && \
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy the API project files
+# Copy the API project file
 COPY . .
 
 # Build the API project
