@@ -6,6 +6,7 @@ import com.learnto.api.repository.GraphRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -36,15 +37,9 @@ public class GraphController {
     }
 
     @PostMapping
-    public Graph createGraph(@RequestBody GraphDTO graphDTO) {
-        Graph graph = new Graph();
-        graph.setName(graphDTO.getName());
-        graph.setDescription(graphDTO.getDescription());
-        graph.setCreatedUser("admin");
-        graph.setAdjacencyMatrix(graphDTO.getAdjacencyMatrix());
-        graph.setAllNodes(graphDTO.getAllNodes());
-        graph.setIsDeleted(false);
-        return graphRepository.save(graph);
+    public ResponseEntity<Void> createGraph(@RequestBody GraphDTO graphDTO) {
+        graphRepository.saveGraph(graphDTO.getName(), graphDTO.getDescription(), "admin", new Date(), false, graphDTO.getAdjacencyMatrix().toString(), graphDTO.getAllNodes().toString());
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
