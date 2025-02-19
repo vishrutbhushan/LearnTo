@@ -1,11 +1,8 @@
 package com.learnto.api.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learnto.api.dto.GraphDTO;
 import com.learnto.api.model.Graph;
 import com.learnto.api.repository.GraphRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
@@ -18,7 +15,6 @@ public class GraphController {
 
     private final GraphRepository graphRepository;
 
-    @Autowired
     public GraphController(GraphRepository graphRepository) {
         this.graphRepository = graphRepository;
     }
