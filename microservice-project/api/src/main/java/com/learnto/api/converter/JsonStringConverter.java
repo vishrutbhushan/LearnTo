@@ -22,7 +22,7 @@ public class JsonStringConverter implements AttributeConverter<JsonNode, String>
     public String convertToDatabaseColumn(JsonNode attribute) {
         try {
             String jsonString = objectMapper.writeValueAsString(attribute);
-            logger.debug("Converted JsonNode to String: {}", jsonString);
+            logger.info("Converted JsonNode to String: {}", jsonString);
             return jsonString;
         } catch (IOException e) {
             logger.error("Error converting JSON to String", e);
@@ -34,7 +34,7 @@ public class JsonStringConverter implements AttributeConverter<JsonNode, String>
     public JsonNode convertToEntityAttribute(String dbData) {
         try {
             JsonNode jsonNode = objectMapper.readTree(dbData);
-            logger.debug("Converted String to JsonNode: {}", jsonNode);
+            logger.info("Converted String to JsonNode: {}", jsonNode);
             return jsonNode;
         } catch (IOException e) {
             logger.error("Error converting String to JSON", e);
