@@ -1,14 +1,8 @@
 package com.learnto.api.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import com.learnto.api.converter.JsonStringConverter;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -36,9 +30,11 @@ public class Graph {
     @Column(name = "is_deleted", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean isDeleted = false;
 
+    @Convert(converter = JsonStringConverter.class)
     @Column(name = "adjacency_matrix", columnDefinition = "JSON", nullable = false)
     private JsonNode adjacencyMatrix;
 
+    @Convert(converter = JsonStringConverter.class)
     @Column(name = "all_nodes", columnDefinition = "JSON", nullable = false)
     private JsonNode allNodes;
 
