@@ -1,5 +1,6 @@
 package com.learnto.api.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -36,10 +37,10 @@ public class Graph {
     private Boolean isDeleted = false;
 
     @Column(name = "adjacency_matrix", columnDefinition = "JSON", nullable = false)
-    private String adjacencyMatrix;
+    private JsonNode adjacencyMatrix;
 
     @Column(name = "all_nodes", columnDefinition = "JSON", nullable = false)
-    private String allNodes;
+    private JsonNode allNodes;
 
     public Long getId() {
         return id;
@@ -89,19 +90,19 @@ public class Graph {
         this.isDeleted = isDeleted;
     }
 
-    public String getAdjacencyMatrix() {
+    public JsonNode getAdjacencyMatrix() {
         return adjacencyMatrix;
     }
 
-    public void setAdjacencyMatrix(String adjacencyMatrix) {
+    public void setAdjacencyMatrix(JsonNode adjacencyMatrix) {
         this.adjacencyMatrix = adjacencyMatrix;
     }
 
-    public String getAllNodes() {
+    public JsonNode getAllNodes() {
         return allNodes;
     }
 
-    public void setAllNodes(String allNodes) {
+    public void setAllNodes(JsonNode allNodes) {
         this.allNodes = allNodes;
     }
 }

@@ -1,11 +1,8 @@
 package com.learnto.api.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learnto.api.dto.GraphDTO;
 import com.learnto.api.model.Graph;
 import com.learnto.api.repository.GraphRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
@@ -17,27 +14,24 @@ import java.util.List;
 public class GraphController {
 
     private final GraphRepository graphRepository;
-    private final ObjectMapper objectMapper;
 
-    @Autowired
-    public GraphController(GraphRepository graphRepository, ObjectMapper objectMapper) {
+    public GraphController(GraphRepository graphRepository) {
         this.graphRepository = graphRepository;
-        this.objectMapper = objectMapper;
     }
 
     @GetMapping
     public List<GraphDTO> getAllGraphs() {
         List<Graph> graphs = graphRepository.findAll();
         return graphs.stream()
-                .map(graph -> new GraphDTO(graph.getName(), graph.getDescription(), graph.getCreatedUser(), null, null))
+                .map(graph -> new GraphDTO(graph.getName(), graph.getDescription(), graph.getCreatedUser(), graph.getAdjacencyMatrix(), graph.getAllNodes()))
                 .toList();
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<GraphDTO> getGraphByName(@PathVariable("name") String name) throws JsonProcessingException {
-        Graph graph = graphRepository.findByName(name).getFirst();
+    public ResponseEntity<GraphDTO> getGraphByName(@PathVariable String name) {
+        Graph graph = graphRepository.findByName(name).get(0);
         GraphDTO graphDTO = new GraphDTO(graph.getName(), graph.getDescription(), graph.getCreatedUser(),
-                objectMapper.readTree(graph.getAdjacencyMatrix()), objectMapper.readTree(graph.getAllNodes()));
+                graph.getAdjacencyMatrix(), graph.getAllNodes());
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(graphDTO);
     }
 
@@ -47,8 +41,8 @@ public class GraphController {
         graph.setName(graphDTO.getName());
         graph.setDescription(graphDTO.getDescription());
         graph.setCreatedUser("admin");
-        graph.setAdjacencyMatrix(graphDTO.getAdjacencyMatrix().toString());
-        graph.setAllNodes(graphDTO.getAllNodes().toString());
+        graph.setAdjacencyMatrix(graphDTO.getAdjacencyMatrix());
+        graph.setAllNodes(graphDTO.getAllNodes());
         graph.setIsDeleted(false);
         return graphRepository.save(graph);
     }
@@ -60,8 +54,8 @@ public class GraphController {
         graph.setName(graphDetails.getName());
         graph.setDescription(graphDetails.getDescription());
         graph.setCreatedUser("admin");
-        graph.setAdjacencyMatrix(graphDetails.getAdjacencyMatrix().toString());
-        graph.setAllNodes(graphDetails.getAllNodes().toString());
+        graph.setAdjacencyMatrix(graphDetails.getAdjacencyMatrix());
+        graph.setAllNodes(graphDetails.getAllNodes());
         graph.setIsDeleted(false);
         return graphRepository.save(graph);
     }
