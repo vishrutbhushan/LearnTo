@@ -12,7 +12,7 @@ import jakarta.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
-@Table(name = "Graphs", schema = "GraphVisualizer")
+@Table(name = "Graphs", schema = "graph_visualizer")
 public class Graph {
 
     @Id
