@@ -1,18 +1,13 @@
 package com.learnto.api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.learnto.api.converter.JsonStringConverter;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "graphs")
+@Table(name = "Graphs", schema = "graph_visualizer")
 public class Graph {
 
     @Id
@@ -28,18 +23,20 @@ public class Graph {
     @Column(name = "created_user", nullable = false)
     private String createdUser;
 
-    @Column(name = "update_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "update_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
     @Column(name = "is_deleted", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean isDeleted = false;
 
+    @Convert(converter = JsonStringConverter.class)
     @Column(name = "adjacency_matrix", columnDefinition = "JSON", nullable = false)
-    private String adjacencyMatrix;
+    private JsonNode adjacencyMatrix;
 
+    @Convert(converter = JsonStringConverter.class)
     @Column(name = "all_nodes", columnDefinition = "JSON", nullable = false)
-    private String allNodes;
+    private JsonNode allNodes;
 
     public Long getId() {
         return id;
@@ -89,19 +86,19 @@ public class Graph {
         this.isDeleted = isDeleted;
     }
 
-    public String getAdjacencyMatrix() {
+    public JsonNode getAdjacencyMatrix() {
         return adjacencyMatrix;
     }
 
-    public void setAdjacencyMatrix(String adjacencyMatrix) {
+    public void setAdjacencyMatrix(JsonNode adjacencyMatrix) {
         this.adjacencyMatrix = adjacencyMatrix;
     }
 
-    public String getAllNodes() {
+    public JsonNode getAllNodes() {
         return allNodes;
     }
 
-    public void setAllNodes(String allNodes) {
+    public void setAllNodes(JsonNode allNodes) {
         this.allNodes = allNodes;
     }
 }

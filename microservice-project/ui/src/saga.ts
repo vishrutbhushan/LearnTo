@@ -3,7 +3,7 @@ import axios from "axios";
 import * as ACTIONS from "./actions";
 import { CREATE_GRAPH_REQUEST, DELETE_GRAPH_REQUEST, FETCH_GRAPH_REQUEST, FETCH_GRAPHS_REQUEST, UPDATE_GRAPH_REQUEST } from "./constants";
 
-const API_BASE_URL = "http://localhost:8080/graph";
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080/graph";
 
 function* fetchGraphs(): Generator<any, void, any> {
   try {
