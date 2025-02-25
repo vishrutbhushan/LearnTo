@@ -8,12 +8,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import ListItem from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import * as ACTIONS from "../actions";
 import { toolbarStyles } from "./styles";
-import { State, NodeControlsProps, SelectedNodesInfoProps, LinkWeightControlsProps, NodeComponentToolbarProps } from "../types";
+import { State } from "../types";
+import NodeControls from "./toolbar/NodeControl";
+import SelectedNodesInfo from "./toolbar/SelectedNodesInfo";
+import LinkWeightControls from "./toolbar/LinkWeightControls";
+import Algorithm from "../Algorithms/algorithm";
 
 const Toolbar = () => {
   const adjacencyMatrix = useSelector((state: State) => state.adjacencyMatrix);
@@ -100,12 +104,12 @@ const Toolbar = () => {
       description: graphDesc,
       adjacencyMatrix: adjacencyMatrix,
       allNodes: allNodes,
-     };
-     dispatch(ACTIONS.createGraph(graph));
-     setGraphName("");
-     setGraphDesc("");
-     setIsSaveDialogOpen(false);
-     dispatch(ACTIONS.reset());
+    };
+    dispatch(ACTIONS.createGraph(graph));
+    setGraphName("");
+    setGraphDesc("");
+    setIsSaveDialogOpen(false);
+    dispatch(ACTIONS.reset());
   };
 
   return (
@@ -178,97 +182,7 @@ const Toolbar = () => {
           </ListItem>
         ))}
       </List>
-    </div>
-  );
-};
-
-const NodeControls: React.FC<NodeControlsProps> = ({
-  nodeName,
-  setNodeName,
-  handleAddNode,
-}) => {
-  const classes = toolbarStyles();
-  return (
-    <div className={classes.horizontalGroup}>
-      <TextField
-        label="Node Name"
-        value={nodeName}
-        onChange={(e) => setNodeName(e.target.value)}
-        className={classes.input}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleAddNode}
-        disabled={!nodeName}
-        className={classes.button}
-      >
-        Add Node
-      </Button>
-    </div>
-  );
-};
-
-const SelectedNodesInfo: React.FC<SelectedNodesInfoProps> = ({
-  selectedNodes,
-}) => {
-  const classes = toolbarStyles();
-  return (
-    <div className={classes.verticalGroup}>
-      <Typography variant="h6">Selected Nodes</Typography>
-      <div className={classes.nodeContainer}>
-        {selectedNodes?.fromNode && (
-          <NodeComponent name={selectedNodes.fromNode} />
-        )}
-        {selectedNodes?.toNode && <NodeComponent name={selectedNodes.toNode} />}
-      </div>
-    </div>
-  );
-};
-
-const NodeComponent: React.FC<NodeComponentToolbarProps> = ({ name }) => {
-  const classes = toolbarStyles();
-  return (
-    <div className={classes.node}>
-      <svg width="50" height="50">
-        <circle cx="25" cy="25" r="20" fill="lightgreen" />
-        <text x="25" y="25" textAnchor="middle" alignmentBaseline="middle">
-          {name}
-        </text>
-      </svg>
-    </div>
-  );
-};
-
-const LinkWeightControls: React.FC<LinkWeightControlsProps> = ({
-  linkWeight,
-  setLinkWeight,
-  handleUpdateWeight,
-  initialLinkWeight,
-  selectedNodes,
-}) => {
-  const classes = toolbarStyles();
-  return (
-    <div className={classes.horizontalGroup}>
-      <TextField
-        label="Link Weight"
-        type="number"
-        value={linkWeight}
-        disabled={!selectedNodes?.fromNode || !selectedNodes?.toNode}
-        onChange={(e) => setLinkWeight(Number(e.target.value))}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleUpdateWeight}
-        disabled={
-          !selectedNodes?.fromNode ||
-          !selectedNodes?.toNode ||
-          linkWeight === initialLinkWeight
-        }
-      >
-        Update Weight
-      </Button>
+      <Algorithm/>
     </div>
   );
 };

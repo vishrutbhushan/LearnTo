@@ -54,7 +54,7 @@ const LinkComponent: React.FC<LinkComponentProps> = ({
         y1={y1}
         x2={x2}
         y2={y2}
-        stroke= {link1.highlighted || link2.highlighted ? "yellow":"black"}
+        stroke= {link1.highlighted || link2.highlighted ? "red":"black"}
         markerEnd={markerEnd}
         markerStart={markerStart}
       />
