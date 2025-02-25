@@ -130,7 +130,6 @@ const setOpenedGraph = (
 
 // The main reducer function
 export const reducer = produce((draft: Draft<State>, action: Action) => {
-  console.log(`Action dispatched: ${action.type}`, action.payload);
   switch (action.type) {
     case CONSTANTS.INSERT_NODE:
       insertNode(draft, action.payload);
